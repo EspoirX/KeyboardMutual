@@ -1,5 +1,5 @@
 # KeyboardMutual
-键盘表情切换完美交互 。
+键盘表情切换完美交互 , demo 效果在 art 文件中。
 
 基本逻辑：
 通过设置 SOFT_INPUT_ADJUST_NOTHING，使界面不会跟随键盘而弹起，从而解决切换时闪的问题。
