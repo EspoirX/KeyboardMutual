@@ -13,6 +13,16 @@ class KeyboardLayout @JvmOverloads constructor(context: Context, attrs: Attribut
     private var openAnim: ValueAnimator? = null
     private var closeAnim: ValueAnimator? = null
 
+    init {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.KeyboardLayout)
+        val observerKeyboardForMySelf =
+            ta.getBoolean(R.styleable.KeyboardLayout_observerKeyboardForMySelf, false)
+        if (observerKeyboardForMySelf){
+            keyboardMutual.observerKeyboardForMySelf()
+        }
+        ta.recycle()
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         if (isInEditMode) return

@@ -18,12 +18,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.MutableLiveData
 import com.lzx.library.KeyboardSp.getLastHeight
 import com.lzx.library.KeyboardSp.saveLastHeight
-import kotlinx.coroutines.flow.MutableStateFlow
 
-class KeyboardDialog(context: Context, private val userLiveData: Boolean = false) : Dialog(context) {
-    val visibleFlow = MutableStateFlow(false)
-    val heightFlow = MutableStateFlow(0)
-
+class KeyboardDialog(context: Context) : Dialog(context) {
     val visibleLiveData = MutableLiveData<Boolean>()
     val heightLiveData = MutableLiveData<Int>()
 
@@ -56,14 +52,8 @@ class KeyboardDialog(context: Context, private val userLiveData: Boolean = false
             if (imeHeight > 0 && getLastHeight() != imeHeight) {
                 saveLastHeight(imeHeight)
             }
-            //flow 会丢消息，所以提供了livedata选择
-            if (userLiveData) {
-                visibleLiveData.value = imeVisible
-                heightLiveData.value = imeHeight
-            } else {
-                heightFlow.tryEmit(imeHeight)
-                visibleFlow.tryEmit(imeVisible)
-            }
+            visibleLiveData.value = imeVisible
+            heightLiveData.value = imeHeight
         }
     }
 

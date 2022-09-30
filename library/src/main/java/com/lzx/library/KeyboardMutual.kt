@@ -12,9 +12,8 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.lzx.library.KeyboardSp.getLastHeight
-import kotlinx.coroutines.flow.Flow
 
-class KeyboardMutual(observerMySelf: Boolean = false, userLiveData: Boolean = false) {
+class KeyboardMutual {
 
     companion object {
         @JvmStatic
@@ -24,23 +23,35 @@ class KeyboardMutual(observerMySelf: Boolean = false, userLiveData: Boolean = fa
     }
 
     private var dialog: KeyboardDialog
+    private var observerKeyboardForMySelf: Boolean = false
 
     init {
         val current = KeyboardActivityManager.INSTANCE.currentActivity
             ?: throw IllegalStateException("No activity found! Should be called after Activity onCreate method!")
-        dialog = KeyboardDialog(current, userLiveData)
+        dialog = KeyboardDialog(current)
 
-        if (!observerMySelf && current is ComponentActivity) {
+        if (current is ComponentActivity) {
             current.lifecycle.addObserver(object : LifecycleEventObserver {
                 override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                     if (event == Lifecycle.Event.ON_CREATE) {
-                        startObserver()
+                        if (!observerKeyboardForMySelf) {
+                            startObserver()
+                        }
                     } else if (event == Lifecycle.Event.ON_DESTROY) {
-                        stopObserver()
+                        if (!observerKeyboardForMySelf) {
+                            stopObserver()
+                        }
                     }
                 }
             })
         }
+    }
+
+    /**
+     * 设置自己操作开始和结束监听键盘
+     */
+    fun observerKeyboardForMySelf() {
+        observerKeyboardForMySelf = true
     }
 
     /**
@@ -65,20 +76,12 @@ class KeyboardMutual(observerMySelf: Boolean = false, userLiveData: Boolean = fa
         }
     }
 
-    fun heightFlow(): Flow<Int> {
-        return dialog.heightFlow
-    }
-
     fun heightLiveData(): MutableLiveData<Int> {
         return dialog.heightLiveData
     }
 
     fun height(): Int {
         return getLastHeight()
-    }
-
-    fun visibleFlow(): Flow<Boolean> {
-        return dialog.visibleFlow
     }
 
     fun visibleLiveData(): MutableLiveData<Boolean> {
