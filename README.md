@@ -1,6 +1,11 @@
 # KeyboardMutual
 键盘表情切换完美交互 , demo 效果在 art 文件中。
 
+### 效果
+<video id="video" controls="" preload="none" poster="封面">
+      <source id="mp4" src="art/1.mp4" type="video/mp4">
+</videos>
+
 基本逻辑：
 通过设置 SOFT_INPUT_ADJUST_NOTHING，使界面不会跟随键盘而弹起，从而解决切换时闪的问题。
 然后用一层布局包裹需要展开的 View，通过改变布局高度来顶起需要被顶起的内容。
