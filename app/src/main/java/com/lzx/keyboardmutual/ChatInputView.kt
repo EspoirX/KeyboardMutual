@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import com.lzx.library.KeyboardLayout
 import com.lzx.library.lifecycleOwner
 
-class ChatActInputView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+class ChatInputView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(context, attrs) {
 
     private val keyboardLayout by lazy {

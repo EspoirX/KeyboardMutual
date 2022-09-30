@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
@@ -19,7 +20,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.lzx.keyboardmutual.ChatActInputView
+        <com.lzx.keyboardmutual.ChatInputView
             android:id="@+id/inputView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -28,6 +29,7 @@
             android:id="@+id/keyboardLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:observerKeyboardForMySelf="false"
             android:minHeight="300dp">
 
             <TextView

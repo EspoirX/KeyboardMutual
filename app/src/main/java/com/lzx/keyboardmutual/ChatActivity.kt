@@ -11,14 +11,14 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat)
 
         findViewById<TextView>(R.id.content).setOnClickListener {
-            findViewById<ChatActInputView>(R.id.inputView).hideKeyboard()
+            findViewById<ChatInputView>(R.id.inputView).hideKeyboard()
         }
     }
 
     override fun onResume() {
         super.onResume()
         if (intent.getBooleanExtra("antoShowKeyboard", false)) {
-            findViewById<ChatActInputView>(R.id.inputView)?.showKeyboard()
+            findViewById<ChatInputView>(R.id.inputView)?.showKeyboard()
         }
     }
 
