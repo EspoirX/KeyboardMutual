@@ -64,13 +64,20 @@ override fun onStart() {
 4. 然后通过 KeyboardLayout 和 keyboardMutual 相关的api去操作展示隐藏，具体用法代码参考 demo 中的 ChatInputView 类。
 
 
+
 KeyboardMutual 默认在 Activity onCreate 的时候开始监听键盘，在 onDestroy 时结束监听。
-但这不使用于所有场景。所以 KeyboardMutual 提供了 startObserver 和 stopObserver 方法用于用户自己去操作监听时机。
+
+但这不使用于所有场景。有时候需要自己控制时机。
+
+所以 KeyboardMutual 提供了 startObserver 和 stopObserver 方法用于用户自己去操作监听时机。
+
 如果要使用，请在 KeyboardLayout 布局中添加 app:observerKeyboardForMySelf="true" 属性。
+
 
 
 代码参考：
 https://github.com/ssseasonnn/KeyboardX
+
 https://github.com/liangjingkanji/soft-input-event
 
 
