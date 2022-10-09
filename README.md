@@ -68,7 +68,7 @@ override fun onStart() {
 
 KeyboardMutual 默认在 Activity onCreate 的时候开始监听键盘，在 onDestroy 时结束监听。
 
-但这不使用于所有场景。有时候需要自己控制时机。
+但这不适用于所有场景。有时候需要自己控制时机。
 
 所以 KeyboardMutual 提供了 startObserver 和 stopObserver 方法用于用户自己去操作监听时机。
 
@@ -76,7 +76,7 @@ KeyboardMutual 默认在 Activity onCreate 的时候开始监听键盘，在 onD
 
 
 
-代码参考：
+代码参考：  
 https://github.com/ssseasonnn/KeyboardX
 
 https://github.com/liangjingkanji/soft-input-event
