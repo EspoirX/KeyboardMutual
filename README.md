@@ -1,5 +1,5 @@
 # KeyboardMutual
-键盘表情切换完美交互 , demo 效果在 art 文件中。
+键盘表情切换完美交互 兼容 API 21 以下, demo 效果在 art 文件中。
 
 
 基本逻辑：
