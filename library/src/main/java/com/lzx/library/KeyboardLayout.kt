@@ -4,20 +4,25 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 
 class KeyboardLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
-    FrameLayout(context, attrs) {
+    FrameLayout(context, attrs), LifecycleOwner {
 
     val keyboardMutual by lazy { KeyboardMutual() }
     private var openAnim: ValueAnimator? = null
     private var closeAnim: ValueAnimator? = null
+    private var mLifecycleRegistry: LifecycleRegistry? = null
 
     init {
+        mLifecycleRegistry = LifecycleRegistry(this)
         val ta = context.obtainStyledAttributes(attrs, R.styleable.KeyboardLayout)
         val observerKeyboardForMySelf =
             ta.getBoolean(R.styleable.KeyboardLayout_observerKeyboardForMySelf, false)
-        if (observerKeyboardForMySelf){
+        if (observerKeyboardForMySelf) {
             keyboardMutual.observerKeyboardForMySelf()
         }
         ta.recycle()
@@ -25,20 +30,31 @@ class KeyboardLayout @JvmOverloads constructor(context: Context, attrs: Attribut
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        mLifecycleRegistry?.currentState = Lifecycle.State.CREATED
         if (isInEditMode) return
-        lifecycleOwner?.let { it ->
-            keyboardMutual.heightLiveData().observe(it, Observer {
-                if (it > 0) {
-                    openAnim?.cancel()
-                    closeAnim?.cancel()
-                    realAnimHeight(it.toFloat())
-                }
-            })
+        keyboardMutual.heightLiveData().observe(this, Observer {
+            if (it > 0) {
+                openAnim?.cancel()
+                closeAnim?.cancel()
+                realAnimHeight(it.toFloat())
+            }
+        })
+    }
+
+    override fun onWindowVisibilityChanged(visibility: Int) {
+        super.onWindowVisibilityChanged(visibility)
+        if (visibility == VISIBLE) {
+            mLifecycleRegistry?.handleLifecycleEvent(Lifecycle.Event.ON_START)
+            mLifecycleRegistry?.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        } else if (visibility == GONE || visibility == INVISIBLE) {
+            mLifecycleRegistry?.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+            mLifecycleRegistry?.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        mLifecycleRegistry?.currentState = Lifecycle.State.DESTROYED
         if (isInEditMode) return
         openAnim?.cancel()
         closeAnim?.cancel()
@@ -85,4 +101,8 @@ class KeyboardLayout @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     private fun realAnimHeight(to: Float, duration: Long = 100) = animHeight(to = to, duration = duration)
+
+    override fun getLifecycle(): Lifecycle {
+        return mLifecycleRegistry!!
+    }
 }
